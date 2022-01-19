@@ -1,0 +1,37 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Kontak {
+  id                Int               @id @default(autoincrement())
+  nama              String
+  telepon           String
+  profil            Profil?
+  sosialMedia       SosialMedia[]
+
+}
+
+model Profil {
+  kontak       Kontak   @relation(fields: [idKontak], references: [id])
+  idKontak     Int      @id
+  alamat       String?
+  ulangTahun   DateTime?
+  gender       String?
+  sudahMenikah Boolean?
+}
+
+model SosialMedia {
+  idSosmed   Int      @id @default(autoincrement())
+  kontak     Kontak   @relation(fields: [idKontak], references: [id])
+  idKontak   Int
+  namaSosmed String
+  username   String
+}
